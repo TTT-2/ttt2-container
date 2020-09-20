@@ -6,13 +6,15 @@ Tested and build with `buildah` & `podman`, should also work with `docker`.
 
 ## TODOs
 
-[] tidy up environment variables
+[ ] tidy up environment variables
 
-[] trap SIGTERM and shutdown server gracefully (most likely only possible with `tmux`, pipes and redirections don't seem to work)
+[ ] trap SIGTERM and shutdown server gracefully (most likely only possible with `tmux`, pipes and redirections don't seem to work)
 
-[] add possibility to programmatically interact with the serverconsole (again `tmux`)
+[ ] add possibility to programmatically interact with the serverconsole (again `tmux`)
 
-[] extend the script to allow more than one github repository
+[ ] extend the script to allow more than one github repository (or none)
+
+[ ] add mount.cfg to mount css
 
 ## Example commands
 
@@ -26,10 +28,10 @@ buildah bud -f Containerfile -t <imagename>
 
 `srcds_run` seems to need a terminal, so we need to use `--tty` to create a pseudo tty. (No clue how docker handles this)
 
-After the imagename you can specify any commandline arguments you would use for `srcds_run`. `-console -game garrysmod +gamemode terrortown` will always be used and if no arguments are given it will also run with `+maxplayers 16 +map gm_flatgrass`.
+After the imagename you can specify any commandline arguments you would use for `srcds_run`. `-console -game garrysmod +gamemode terrortown` will always be used and if no arguments are given it will additionally run with `+maxplayers 16 +map gm_flatgrass`.
 
 ```bash
-podman create -p 27015:27015 -p 27015:27015/udp -v css_vol:/home/steam/css_ds -v gmod_vol:/home/steam/gmod_ds -v steamcmd_vol:/home/steam/steamcmd --tty <imagename>
+podman create -p 27015:27015 -p 27015:27015/udp -v css_vol:/home/steam/css_ds -v gmod_vol:/home/steam/gmod_ds --tty <imagename>
 ```
 
 ### Start container with podman
