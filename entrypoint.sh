@@ -2,8 +2,8 @@
 
 # Install/update/validate css and gmod dedicated server
 bash "${STEAMCMD_DIR}/steamcmd.sh" +login anonymous \
-        +force_install_dir "${CSS_DIR}" +app_update 232330 validate \
-        +force_install_dir "${GMOD_DIR}" +app_update 4020 validate \
+        +force_install_dir "${CSS_DIR}" +app_update 232330 $("${CSS_VALIDATE}" && echo 'validate')  \
+        +force_install_dir "${GMOD_DIR}" +app_update 4020 $("${GMOD_VALIDATE}" && echo 'validate') \
         +quit
 
 # Install a github repo (by default the masterbranch of ttt2 into gmods addons folder)

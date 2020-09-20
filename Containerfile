@@ -8,6 +8,9 @@ ENV STEAMCMD_DIR="${HOME_DIR}/steamcmd"
 ENV GMOD_DIR="${HOME_DIR}/gmod_ds"
 ENV CSS_DIR="${HOME_DIR}/css_ds"
 
+ENV CSS_VALIDATE="false"
+ENV GMOD_VALIDATE="false"
+
 ENV ADDON_DIR="${GMOD_DIR}/garrysmod/addons"
 ENV CFG_DIR="${GMOD_DIR}/garrysmod/cfg"
 
