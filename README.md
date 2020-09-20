@@ -6,15 +6,15 @@ Tested and build with `buildah` & `podman`, should also work with `docker`.
 
 ## TODOs
 
-[ ] tidy up environment variables
+- [ ] tidy up environment variables
 
-[ ] trap SIGTERM and shutdown server gracefully (most likely only possible with `tmux`, pipes and redirections don't seem to work)
+- [ ] trap SIGTERM and shutdown server gracefully (most likely only possible with `tmux`, pipes and redirections don't seem to work)
 
-[ ] add possibility to programmatically interact with the serverconsole (again `tmux`)
+- [ ] add possibility to programmatically interact with the serverconsole (again `tmux`)
 
-[ ] extend the script to allow more than one github repository (or none)
+- [ ] extend the script to allow more than one github repository (or none)
 
-[ ] add mount.cfg to mount css
+- [ ] add mount.cfg to mount css
 
 ## Example commands
 
