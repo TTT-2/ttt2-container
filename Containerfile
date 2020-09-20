@@ -20,9 +20,6 @@ ENV GIT_TARGET_DIR="${ADDON_DIR}/ttt2"
 ADD entrypoint.sh "${HOME_DIR}/entrypoint.sh"
 
 # Download needed packages
-# Create steam user
-# Download steamcmd and setup directories / symlinks
-# Tidy up
 RUN set -x \
 	&& dpkg --add-architecture i386 \
 	&& apt-get update \
@@ -33,18 +30,21 @@ RUN set -x \
 		ca-certificates=20190110 \
 		libsdl2-2.0-0:i386=2.0.9+dfsg1-1 \
 		libtinfo5:i386 \
+	&& rm -rf /var/lib/apt/lists/*
+
+# Create steam user
+RUN	set -x \
 	&& useradd -u "${PUID}" -m "${USER}" \
-	&& chown -R "${USER}:${USER}" "${HOME_DIR}/entrypoint.sh" "${HOME_DIR}" \
+	&& chown -R "${USER}:${USER}" "${HOME_DIR}/entrypoint.sh" "${HOME_DIR}"
+
+# Download steamcmd and setup directories / symlinks
+RUN set -x \
     && su "${USER}" -c \
-        "mkdir -p \"${STEAMCMD_DIR}\" \
+        "mkdir -p \"${STEAMCMD_DIR}\" \"${HOME_DIR}/.steam/sdk32\" \"${GMOD_DIR}\" \"${CSS_DIR}\" \
         && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C \"${STEAMCMD_DIR}\" \
         && \"./${STEAMCMD_DIR}/steamcmd.sh\" +login anonymous +quit \
-        && mkdir -p \"${HOME_DIR}/.steam/sdk32\" \
-        && mkdir -p \"${GMOD_DIR}\" \
-        && mkdir -p \"${CSS_DIR}\" \
         && chmod +x \"${HOME_DIR}/entrypoint.sh\" \
-        && ln -s \"${STEAMCMD_DIR}/linux32/steamclient.so\" \"${HOME_DIR}/.steam/sdk32/steamclient.so\"" \
-	&& rm -rf /var/lib/apt/lists/*
+        && ln -s \"${STEAMCMD_DIR}/linux32/steamclient.so\" \"${HOME_DIR}/.steam/sdk32/steamclient.so\""
 
 # Switch to steam user
 USER ${USER}
