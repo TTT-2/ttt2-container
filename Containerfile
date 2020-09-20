@@ -49,7 +49,7 @@ RUN set -x \
 # Switch to steam user
 USER ${USER}
 
-VOLUME ["${GMOD_DIR}", "${CSS_DIR}", "${STEAMCMD_DIR}"]
+VOLUME ["${GMOD_DIR}", "${CSS_DIR}"]
 
 WORKDIR ${HOME_DIR}
 
