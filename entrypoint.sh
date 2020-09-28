@@ -6,6 +6,8 @@ bash "${STEAMCMD_DIR}/steamcmd.sh" +login anonymous \
         +force_install_dir "${GMOD_DIR}" +app_update 4020 $("${GMOD_VALIDATE}" && echo 'validate') \
         +quit
 
+printf "\"mountcfg\" {\"cstrike\" \"${CSS_DIR}/cstrike\"}\n" > "${GMOD_DIR}/garrysmod/cfg/mount.cfg"
+
 # Install a github repo (by default the masterbranch of ttt2 into gmods addons folder)
 mkdir -p "${GMOD_DIR}/garrysmod/addons/${GIT_ADDON_DIR}" \
     && wget -qO - "${GIT_URL}" \
