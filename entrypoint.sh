@@ -7,9 +7,9 @@ bash "${STEAMCMD_DIR}/steamcmd.sh" +login anonymous \
         +quit
 
 # Install a github repo (by default the masterbranch of ttt2 into gmods addons folder)
-mkdir -p "${GIT_TARGET_DIR}" \
+mkdir -p "${GMOD_DIR}/garrysmod/addons/${GIT_ADDON_DIR}" \
     && wget -qO - "${GIT_URL}" \
-    | tar xzf - -C "${GIT_TARGET_DIR}" --strip-components=1 \
+    | tar xzf - -C "${GMOD_DIR}/garrysmod/addons/${GIT_ADDON_DIR}" --strip-components=1 --overwrite \
     || { echo "Download of Git repo failed"; exit 1; }
 
 # Start the gmod server

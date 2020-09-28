@@ -17,8 +17,8 @@ ENV CL_PORT="27005"
 ENV GIT_OWNER="TTT-2"
 ENV GIT_REPO="TTT2"
 ENV GIT_REF="master"
-ENV GIT_URL="https://github.com/${GIT_OWNER}/${GIT_REPO}/archive/${GIT_REF}.tar.gz"
-ENV GIT_TARGET_DIR="${ADDON_DIR}/ttt2"
+ENV GIT_URL="https://github.com/${GIT_OWNER}/${GIT_REPO}/tarball/${GIT_REF}"
+ENV GIT_ADDON_FOLDER="ttt2"
 
 ADD entrypoint.sh "${HOME_DIR}/entrypoint.sh"
 
