@@ -10,7 +10,7 @@ printf "\"mountcfg\" {\"cstrike\" \"${CSS_DIR}/cstrike\"}\n" > "${GMOD_DIR}/garr
 
 # Install a github repo (by default the masterbranch of ttt2 into gmods addons folder)
 mkdir -p "${GMOD_DIR}/garrysmod/addons/${GIT_ADDON_DIR}" \
-    && wget -qO - "${GIT_URL}" \
+    && wget -qO - "https://github.com/${GIT_OWNER}/${GIT_REPO}/tarball/${GIT_REF}" \
     | tar xzf - -C "${GMOD_DIR}/garrysmod/addons/${GIT_ADDON_DIR}" --strip-components=1 --overwrite \
     || { echo "Download of Git repo failed"; exit 1; }
 
