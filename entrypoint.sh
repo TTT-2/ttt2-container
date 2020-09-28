@@ -16,5 +16,8 @@ mkdir -p "${GIT_TARGET_DIR}" \
 bash "${GMOD_DIR}/srcds_run" \
         -console \
         -game garrysmod \
+        -port "${SV_PORT}" \
+        -clientport "${CL_PORT}" \
+        -strictportbind \
         +gamemode terrortown \
         "$@"

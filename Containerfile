@@ -11,8 +11,8 @@ ENV CSS_DIR="${HOME_DIR}/css_ds"
 ENV CSS_VALIDATE="false"
 ENV GMOD_VALIDATE="false"
 
-ENV ADDON_DIR="${GMOD_DIR}/garrysmod/addons"
-ENV CFG_DIR="${GMOD_DIR}/garrysmod/cfg"
+ENV SV_PORT="27015"
+ENV CL_PORT="27005"
 
 ENV GIT_OWNER="TTT-2"
 ENV GIT_REPO="TTT2"
@@ -59,5 +59,3 @@ WORKDIR ${HOME_DIR}
 ENTRYPOINT ["bash", "entrypoint.sh"]
 
 CMD ["+maxplayers 16", "+map gm_flatgrass"]
-
-EXPOSE 27015/tcp 27015/udp
