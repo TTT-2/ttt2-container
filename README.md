@@ -14,7 +14,7 @@ Tested and build with `buildah` & `podman`, should also work with `docker`.
 
 - [ ] extend the script to allow more than one github repository (or none)
 
-- [ ] add mount.cfg to mount css
+- [X] add mount.cfg to mount css
 
 ## Example commands
 
@@ -30,20 +30,22 @@ buildah bud -f Containerfile -t <imagename>
 
 After the imagename you can specify any commandline arguments you would use for `srcds_run`. `-console -game garrysmod +gamemode terrortown` will always be used and if no arguments are given it will additionally run with `+maxplayers 16 +map gm_flatgrass`.
 
+Rootless Podman's default porthandler wasn't working for me, but since Podman v2.1.0 you can change it with the `--net slirp4netns:port_handler` option.
+
 ```bash
-podman create -p 27015:27015 -p 27015:27015/udp -v css_vol:/home/steam/css_ds -v gmod_vol:/home/steam/gmod_ds --tty <imagename>
+podman create -p 27015:27015 -p 27015:27015/udp -v <volume or bindmount>:/home/steam/css_ds -v <volume or bindmount>:/home/steam/gmod_ds --net slirp4netns:port_handler=slirp4netns --tty --name=<containername> <imagename>
 ```
 
 ### Start container with podman
 
 ```bash
-podman start -l
+podman start <containername>
 ```
 
 ### (optional) Attach to the container
 
 ```bash
-podman attach -l
+podman attach <containername>
 ```
 
 `Ctrl + p` & `Ctrl + q` to quit out without killing the server.
@@ -51,15 +53,11 @@ podman attach -l
 ### (optional) Follow logfile
 
 ```bash
-podman logs -l -f
+podman logs -f <containername>
 ```
 
 `Ctrl + c` to quit following the logs.
 
-### Stopping the container
+### Stopping the container cleanly
 
-```bash
-podman stop -l
-```
-
-This will 'hang' until it reaches the timeout (default 10s) and then proceed to kill the container. As the entrypoint script does not trap the `SIGTERM` sent by `podman stop` (for now).
+Attaching to the container (see above) will connect you directly to the gmod serverconsole. Therefore typing `quit` and then pressing enter will cleanly shutdown the server and then the container itself.
