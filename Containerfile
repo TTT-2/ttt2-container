@@ -1,27 +1,35 @@
 FROM debian:buster-slim
 
 ARG PUID=1000
+ARG USER=steam
+ARG HOME_DIR="/home/${USER}"
 
-ENV USER=steam
-ENV HOME_DIR="/home/${USER}"
-ENV STEAMCMD_DIR="${HOME_DIR}/steamcmd"
-ENV GMOD_DIR="${HOME_DIR}/gmod_ds"
-ENV CSS_DIR="${HOME_DIR}/css_ds"
+ARG STEAMCMD_DIR
+ARG GMOD_DIR
+ARG CSS_DIR
+ARG GMOD_ADDON_DIR
+ARG GMOD_CFG_DIR
 
+# Do NOT set these environment variables when you create the container!
+# If you wish to change them set the ARGs above before building the image.
+ENV STEAMCMD_DIR="${STEAMCMD_DIR:-$HOME_DIR/steamcmd}"
+ENV GMOD_DIR="${GMOD_DIR:-$HOME_DIR/gmod_ds}"
+ENV CSS_DIR="${CSS_DIR:-$HOME_DIR/css_ds}"
+ENV GMOD_ADDON_DIR="${GMOD_ADDON_DIR:-$HOME_DIR/gmod_addons}"
+ENV GMOD_CFG_DIR="${GMOD_CFG_DIR:-$HOME_DIR/gmod_cfg}"
+
+# Set to 'true' if you want steamcmd to validate
+# your install once the container is run.
 ENV CSS_VALIDATE="false"
 ENV GMOD_VALIDATE="false"
 
+# Set to whatever ports you want gmod to use.
 ENV SV_PORT="27015"
 ENV CL_PORT="27005"
 
-ENV GIT_OWNER="TTT-2"
-ENV GIT_REPO="TTT2"
-ENV GIT_REF="master"
-ENV GIT_ADDON_DIR="ttt2"
-
 ADD entrypoint.sh "${HOME_DIR}/entrypoint.sh"
 
-# Download needed packages
+# Download needed packages.
 RUN set -x \
 	&& dpkg --add-architecture i386 \
 	&& apt-get update \
@@ -34,24 +42,24 @@ RUN set -x \
 		libtinfo5:i386 \
 	&& rm -rf /var/lib/apt/lists/*
 
-# Create steam user
+# Create user.
 RUN	set -x \
 	&& useradd -u "${PUID}" -m "${USER}" \
 	&& chown -R "${USER}:${USER}" "${HOME_DIR}/entrypoint.sh" "${HOME_DIR}"
 
-# Download steamcmd and setup directories / symlinks
+# Download steamcmd and setup directories / symlinks.
 RUN set -x \
     && su "${USER}" -c \
-        "mkdir -p \"${STEAMCMD_DIR}\" \"${HOME_DIR}/.steam/sdk32\" \"${GMOD_DIR}\" \"${CSS_DIR}\" \
+        "mkdir -p \"${STEAMCMD_DIR}\" \"${HOME_DIR}/.steam/sdk32\" \"${GMOD_DIR}\" \"${CSS_DIR}\" \"${GMOD_ADDON_DIR}\" \"${GMOD_CFG_DIR}\"\
         && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C \"${STEAMCMD_DIR}\" \
         && \"./${STEAMCMD_DIR}/steamcmd.sh\" +login anonymous +quit \
         && chmod +x \"${HOME_DIR}/entrypoint.sh\" \
         && ln -s \"${STEAMCMD_DIR}/linux32/steamclient.so\" \"${HOME_DIR}/.steam/sdk32/steamclient.so\""
 
-# Switch to steam user
+# Switch to user.
 USER ${USER}
 
-VOLUME ["${GMOD_DIR}", "${CSS_DIR}"]
+VOLUME ["${GMOD_DIR}", "${CSS_DIR}", "${GMOD_ADDON_DIR}", "${GMOD_CFG_DIR}"]
 
 WORKDIR ${HOME_DIR}
 
